@@ -47,7 +47,13 @@ function getUnlockDate(monthIndex) {
 // Load resolved tiles from localStorage
 function getResolvedTiles() {
     const stored = localStorage.getItem('resolvedTiles');
-    return stored ? JSON.parse(stored) : {};
+    if (!stored) return {};
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error('Failed to parse resolvedTiles from localStorage:', e);
+        return {};
+    }
 }
 
 // Save resolved tile to localStorage
@@ -64,7 +70,7 @@ function createTile(config, index) {
     
     const isUnlocked = isMonthUnlocked(index);
     const resolvedTiles = getResolvedTiles();
-    const isResolved = resolvedTiles.hasOwnProperty(index);
+    const isResolved = Object.prototype.hasOwnProperty.call(resolvedTiles, index);
     
     // Set tile state
     if (isResolved) {
@@ -130,50 +136,106 @@ function openModal(config, index, isResolved) {
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     
+    modal.setAttribute('aria-hidden', 'false');
     modalTitle.textContent = config.month;
     
     if (isResolved) {
         const resolvedTiles = getResolvedTiles();
-        modalBody.innerHTML = `
-            <p>🎉 Congratulations! You've already solved this puzzle!</p>
-            <div class="code-display">${resolvedTiles[index]}</div>
-            <p style="margin-top: 20px;">Your 4-digit code for ${config.month} is ready to use.</p>
-        `;
+        // Clear previous content
+        modalBody.innerHTML = '';
+        
+        // Create elements safely
+        const congrats = document.createElement('p');
+        congrats.textContent = '🎉 Congratulations! You\'ve already solved this puzzle!';
+        
+        const codeDisplay = document.createElement('div');
+        codeDisplay.className = 'code-display';
+        codeDisplay.textContent = resolvedTiles[index];
+        
+        const message = document.createElement('p');
+        message.style.marginTop = '20px';
+        message.textContent = `Your 4-digit code for ${config.month} is ready to use.`;
+        
+        modalBody.appendChild(congrats);
+        modalBody.appendChild(codeDisplay);
+        modalBody.appendChild(message);
     } else {
-        modalBody.innerHTML = `
-            <p>🎮 Time to solve your puzzle!</p>
-            <p>Click the link below to play the Clues by Sam game for ${config.month}.</p>
-            <a href="${config.gameUrl}" target="_blank" rel="noopener noreferrer" class="modal-link">Play Game</a>
-            <div class="modal-input-group">
-                <label for="codeInput">Enter the 4-digit code you found:</label>
-                <input type="text" id="codeInput" maxlength="4" pattern="[0-9]{4}" placeholder="XXXX">
-                <button class="btn" id="submitCode" style="width: 100%; margin-top: 15px;">Submit Code</button>
-            </div>
-        `;
+        // Clear previous content
+        modalBody.innerHTML = '';
+        
+        const intro = document.createElement('p');
+        intro.textContent = '🎮 Time to solve your puzzle!';
+        
+        const instructions = document.createElement('p');
+        instructions.textContent = `Click the link below to play the Clues by Sam game for ${config.month}.`;
+        
+        const gameLink = document.createElement('a');
+        gameLink.href = config.gameUrl;
+        gameLink.target = '_blank';
+        gameLink.rel = 'noopener noreferrer';
+        gameLink.className = 'modal-link';
+        gameLink.textContent = 'Play Game';
+        
+        const inputGroup = document.createElement('div');
+        inputGroup.className = 'modal-input-group';
+        
+        const label = document.createElement('label');
+        label.setAttribute('for', 'codeInput');
+        label.textContent = 'Enter the 4-digit code you found:';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'codeInput';
+        input.maxLength = 4;
+        input.pattern = '[0-9]{4}';
+        input.placeholder = 'XXXX';
+        
+        const submitBtn = document.createElement('button');
+        submitBtn.className = 'btn';
+        submitBtn.id = 'submitCode';
+        submitBtn.style.width = '100%';
+        submitBtn.style.marginTop = '15px';
+        submitBtn.textContent = 'Submit Code';
+        
+        inputGroup.appendChild(label);
+        inputGroup.appendChild(input);
+        inputGroup.appendChild(submitBtn);
+        
+        modalBody.appendChild(intro);
+        modalBody.appendChild(instructions);
+        modalBody.appendChild(gameLink);
+        modalBody.appendChild(inputGroup);
+        
+        // Create error message element
+        const errorMsg = document.createElement('p');
+        errorMsg.style.color = '#d63031';
+        errorMsg.style.marginTop = '10px';
+        errorMsg.style.display = 'none';
+        errorMsg.id = 'errorMessage';
+        inputGroup.appendChild(errorMsg);
         
         // Add event listener for code submission
-        const submitBtn = document.getElementById('submitCode');
-        const codeInput = document.getElementById('codeInput');
-        
-        codeInput.addEventListener('input', (e) => {
+        input.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
         
         submitBtn.addEventListener('click', () => {
-            const enteredCode = codeInput.value;
+            const enteredCode = input.value;
             if (enteredCode.length === 4) {
                 // Save the code (in real implementation, you would verify it)
                 saveResolvedTile(index, enteredCode);
                 modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
                 // Refresh the page to show the updated state
                 renderTiles();
             } else {
-                alert('Please enter a 4-digit code');
+                errorMsg.textContent = 'Please enter a 4-digit code';
+                errorMsg.style.display = 'block';
             }
         });
         
-        codeInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && codeInput.value.length === 4) {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && input.value.length === 4) {
                 submitBtn.click();
             }
         });
@@ -198,13 +260,16 @@ function setupModalClose() {
     const modal = document.getElementById('modal');
     const closeBtn = document.querySelector('.close');
     
-    closeBtn.addEventListener('click', () => {
+    const closeModal = () => {
         modal.style.display = 'none';
-    });
+        modal.setAttribute('aria-hidden', 'true');
+    };
+    
+    closeBtn.addEventListener('click', closeModal);
     
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
-            modal.style.display = 'none';
+            closeModal();
         }
     });
 }
