@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #F28F42 0%, #FF0000 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
     color: #333;
@@ -30,6 +30,27 @@ h1 {
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 40px;
     font-size: 1.1rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.reset-btn {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.9);
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.reset-btn:hover {
+    background: rgba(255,255,255,0.08);
 }
 
 .tiles-grid {
@@ -60,7 +81,7 @@ h1 {
 }
 
 .tile.locked {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF0000 100%);
+    background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
     cursor: not-allowed;
     opacity: 0.7;
 }
@@ -71,11 +92,11 @@ h1 {
 }
 
 .tile.unlocked {
-    background: linear-gradient(135deg, #FFFF99 0%, #FFFF00 100%);
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
 }
 
 .tile.resolved {
-    background: linear-gradient(135deg, #D4EEF5 0%, #A3DAE3 100%);
+    background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
 }
 
 .tile-header {
@@ -110,6 +131,12 @@ h1 {
     margin-top: 10px;
 }
 
+.unlock-eta {
+    font-size: 0.85rem;
+    color: #636e72;
+    margin-top: 6px;
+}
+
 .tile.unlocked .unlock-date,
 .tile.resolved .unlock-date {
     color: #2d3436;
@@ -118,14 +145,14 @@ h1 {
 .code-display {
     font-size: 2rem;
     font-weight: bold;
-    color: #F28F42;
+    color: #00b894;
     margin-top: 15px;
     letter-spacing: 5px;
     font-family: 'Courier New', monospace;
 }
 
 .btn {
-    background-color: #F28F42;
+    background-color: #6c5ce7;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -137,7 +164,7 @@ h1 {
 }
 
 .btn:hover {
-    background-color: #E67E32;
+    background-color: #5f3dc4;
 }
 
 .btn:disabled {
@@ -197,7 +224,7 @@ h1 {
     display: inline-block;
     margin-top: 20px;
     padding: 12px 24px;
-    background-color: #F28F42;
+    background-color: #6c5ce7;
     color: white;
     text-decoration: none;
     border-radius: 25px;
@@ -205,7 +232,7 @@ h1 {
 }
 
 .modal-link:hover {
-    background-color: #E67E32;
+    background-color: #5f3dc4;
 }
 
 .modal-input-group {
@@ -232,7 +259,7 @@ h1 {
 
 .modal-input-group input:focus {
     outline: none;
-    border-color: #F28F42;
+    border-color: #6c5ce7;
 }
 
 /* Responsive design */

@@ -110,6 +110,16 @@ function createTile(config, index) {
         unlockDateText.className = 'unlock-date';
         unlockDateText.textContent = `Unlocks: ${unlockDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
         tileContent.appendChild(unlockDateText);
+        // Show days until unlock
+        const now = getCurrentDate();
+        const msUntil = unlockDate.getTime() - now.getTime();
+        if (msUntil > 0) {
+            const days = Math.ceil(msUntil / (1000 * 60 * 60 * 24));
+            const eta = document.createElement('div');
+            eta.className = 'unlock-eta';
+            eta.textContent = `${days} day${days > 1 ? 's' : ''} until unlock`;
+            tileContent.appendChild(eta);
+        }
     }
     
     tile.appendChild(tileHeader);
@@ -230,6 +240,21 @@ function setupModalClose() {
 function init() {
     renderTiles();
     setupModalClose();
+    // Wire reset button (with confirmation)
+    const resetBtn = document.getElementById('resetBtn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            const ok = confirm('Are you sure you want to reset all progress? This cannot be undone.');
+            if (ok) {
+                if (typeof window.debugReset === 'function') {
+                    window.debugReset();
+                } else {
+                    localStorage.removeItem('resolvedTiles');
+                    renderTiles();
+                }
+            }
+        });
+    }
 }
 
 // Run when DOM is loaded
