@@ -1,0 +1,267 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+.tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.tile {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.tile.locked {
+    background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.tile.locked:hover {
+    transform: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.tile.unlocked {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+}
+
+.tile.resolved {
+    background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+}
+
+.tile-header {
+    width: 100%;
+    text-align: center;
+}
+
+.month-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2d3436;
+    margin-bottom: 10px;
+}
+
+.tile.locked .month-name {
+    color: #636e72;
+}
+
+.status-icon {
+    font-size: 3rem;
+    margin: 20px 0;
+}
+
+.tile-content {
+    text-align: center;
+    width: 100%;
+}
+
+.unlock-date {
+    font-size: 0.9rem;
+    color: #636e72;
+    margin-top: 10px;
+}
+
+.tile.unlocked .unlock-date,
+.tile.resolved .unlock-date {
+    color: #2d3436;
+}
+
+.code-display {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00b894;
+    margin-top: 15px;
+    letter-spacing: 5px;
+    font-family: 'Courier New', monospace;
+}
+
+.btn {
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #5f3dc4;
+}
+
+.btn:disabled {
+    background-color: #b2bec3;
+    cursor: not-allowed;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 20px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+#modalTitle {
+    margin-bottom: 20px;
+    color: #2d3436;
+}
+
+#modalBody {
+    color: #636e72;
+    line-height: 1.6;
+}
+
+.modal-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #6c5ce7;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-link:hover {
+    background-color: #5f3dc4;
+}
+
+.modal-input-group {
+    margin-top: 20px;
+}
+
+.modal-input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #2d3436;
+}
+
+.modal-input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.modal-input-group input:focus {
+    outline: none;
+    border-color: #6c5ce7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .tiles-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .tile {
+        padding: 20px;
+        min-height: 180px;
+    }
+
+    .month-name {
+        font-size: 1.2rem;
+    }
+
+    .status-icon {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tiles-grid {
+        grid-template-columns: 1fr;
+    }
+}
