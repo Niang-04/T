@@ -190,7 +190,7 @@ function openModal(config, index, isResolved) {
                 });
             } else {
                 // Wrong answer
-                errorMessage.textContent = 'That\'s not correct. Try again!';
+                errorMessage.textContent = `Incorrect role for ${config.character}. Try again!`;
                 errorMessage.style.display = 'block';
             }
         });
