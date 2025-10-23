@@ -1,17 +1,17 @@
 // Configuration: Clues by Sam game URLs for each month
 const gameConfig = [
-    { month: 'October', gameUrl: 'https://cluesbysam.com/', code: '0123' },
-    { month: 'November', gameUrl: 'https://cluesbysam.com/', code: '1357' },
-    { month: 'December', gameUrl: 'https://cluesbysam.com/', code: '2468' },
-    { month: 'January', gameUrl: 'https://cluesbysam.com/', code: '1234' },
-    { month: 'February', gameUrl: 'https://cluesbysam.com/', code: '2345' },
-    { month: 'March', gameUrl: 'https://cluesbysam.com/', code: '3456' },
-    { month: 'April', gameUrl: 'https://cluesbysam.com/', code: '4567' },
-    { month: 'May', gameUrl: 'https://cluesbysam.com/', code: '5678' },
-    { month: 'June', gameUrl: 'https://cluesbysam.com/', code: '6789' },
-    { month: 'July', gameUrl: 'https://cluesbysam.com/', code: '7890' },
-    { month: 'August', gameUrl: 'https://cluesbysam.com/', code: '8901' },
-    { month: 'September', gameUrl: 'https://cluesbysam.com/', code: '9012' }
+    { month: 'October', gameUrl: 'https://cluesbysam.com/archive/da879b8359d5/', code: '0123', character: 'Cheryl', correctRole: 'innocent' },
+    { month: 'November', gameUrl: 'https://cluesbysam.com/archive/ff2ddec591b8/', code: '1357', character: 'Vince', correctRole: 'criminal' },
+    { month: 'December', gameUrl: 'https://cluesbysam.com/archive/0bc6d21e51d6/', code: '2468', character: 'Janet', correctRole: 'innocent' },
+    { month: 'January', gameUrl: 'https://cluesbysam.com/archive/9d47b7b1ca7b/', code: '1234', character: 'Vicky', correctRole: 'criminal' },
+    { month: 'February', gameUrl: 'https://cluesbysam.com/archive/e5a55fb98820/', code: '2345', character: 'Rob', correctRole: 'criminal' },
+    { month: 'March', gameUrl: 'https://cluesbysam.com/archive/325524b265bc/', code: '3456', character: 'Lucy', correctRole: 'criminal' },
+    { month: 'April', gameUrl: 'https://cluesbysam.com/s/archive/17b596917377/', code: '4567', character: 'Ben', correctRole: 'innocent' },
+    { month: 'May', gameUrl: 'https://cluesbysam.com/s/archive/08cab97f0fdb/', code: '5678', character: 'Olivia', correctRole: 'criminal' },
+    { month: 'June', gameUrl: 'https://cluesbysam.com/s/archive/95a745eb930a/', code: '6789', character: 'Laura', correctRole: 'criminal' },
+    { month: 'July', gameUrl: 'https://cluesbysam.com/archive/d7d07ec6811d/', code: '7890', character: 'Brian', correctRole: 'criminal' },
+    { month: 'August', gameUrl: 'https://cluesbysam.com/archive/f14610e1cd4d/', code: '8901', character: 'Zara', correctRole: 'innocent' },
+    { month: 'September', gameUrl: 'https://cluesbysam.com/archive/534926b17285/', code: '9012', character: 'Amy', correctRole: 'criminal' }
 ];
 
 // Get the year this project started (for calculating which months should be unlocked)
@@ -145,36 +145,53 @@ function openModal(config, index, isResolved) {
             <p>Click the link below to play the Clues by Sam game for ${config.month}.</p>
             <a href="${config.gameUrl}" target="_blank" rel="noopener noreferrer" class="modal-link">Play Game</a>
             <div class="modal-input-group">
-                <label for="codeInput">Enter the 4-digit code you found:</label>
-                <input type="text" id="codeInput" maxlength="4" pattern="[0-9]{4}" placeholder="XXXX">
-                <button class="btn" id="submitCode" style="width: 100%; margin-top: 15px;">Submit Code</button>
+                <label for="roleInput">What is the role of ${config.character}?</label>
+                <select id="roleInput" style="width: 100%; padding: 10px; font-size: 16px; border-radius: 4px; border: 1px solid #ddd; margin-top: 8px;">
+                    <option value="">Select a role...</option>
+                    <option value="innocent">Innocent</option>
+                    <option value="criminal">Criminal</option>
+                </select>
+                <button class="btn" id="submitCode" style="width: 100%; margin-top: 15px;">Submit Answer</button>
+                <div id="errorMessage" style="color: #ff4444; margin-top: 10px; display: none;"></div>
             </div>
         `;
         
-        // Add event listener for code submission
+        // Add event listener for answer submission
         const submitBtn = document.getElementById('submitCode');
-        const codeInput = document.getElementById('codeInput');
-        
-        codeInput.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/[^0-9]/g, '');
-        });
+        const roleInput = document.getElementById('roleInput');
+        const errorMessage = document.getElementById('errorMessage');
         
         submitBtn.addEventListener('click', () => {
-            const enteredCode = codeInput.value;
-            if (enteredCode.length === 4) {
-                // Save the code (in real implementation, you would verify it)
-                saveResolvedTile(index, enteredCode);
-                modal.style.display = 'none';
-                // Refresh the page to show the updated state
-                renderTiles();
-            } else {
-                alert('Please enter a 4-digit code');
+            const selectedRole = roleInput.value.toLowerCase();
+            
+            if (!selectedRole) {
+                errorMessage.textContent = 'Please select a role';
+                errorMessage.style.display = 'block';
+                return;
             }
-        });
-        
-        codeInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && codeInput.value.length === 4) {
-                submitBtn.click();
+            
+            // Validate the answer
+            if (selectedRole === config.correctRole.toLowerCase()) {
+                // Correct answer! Save the code
+                saveResolvedTile(index, config.code);
+                
+                // Show success message with the code
+                modalBody.innerHTML = `
+                    <p>🎉 Congratulations! That's correct!</p>
+                    <p>${config.character} is ${config.correctRole}!</p>
+                    <div class="code-display" style="font-size: 32px; margin: 20px 0;">${config.code}</div>
+                    <p>Your 4-digit code for ${config.month} is: <strong>${config.code}</strong></p>
+                    <button class="btn" id="closeModal" style="width: 100%; margin-top: 15px;">Close</button>
+                `;
+                
+                document.getElementById('closeModal').addEventListener('click', () => {
+                    modal.style.display = 'none';
+                    renderTiles();
+                });
+            } else {
+                // Wrong answer
+                errorMessage.textContent = 'That\'s not correct. Try again!';
+                errorMessage.style.display = 'block';
             }
         });
     }
