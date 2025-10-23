@@ -1,5 +1,8 @@
 // Configuration: Clues by Sam game URLs for each month
 const gameConfig = [
+    { month: 'October', gameUrl: 'https://cluesbysam.com/', code: '0123' },
+    { month: 'November', gameUrl: 'https://cluesbysam.com/', code: '1357' },
+    { month: 'December', gameUrl: 'https://cluesbysam.com/', code: '2468' },
     { month: 'January', gameUrl: 'https://cluesbysam.com/', code: '1234' },
     { month: 'February', gameUrl: 'https://cluesbysam.com/', code: '2345' },
     { month: 'March', gameUrl: 'https://cluesbysam.com/', code: '3456' },
@@ -8,16 +11,13 @@ const gameConfig = [
     { month: 'June', gameUrl: 'https://cluesbysam.com/', code: '6789' },
     { month: 'July', gameUrl: 'https://cluesbysam.com/', code: '7890' },
     { month: 'August', gameUrl: 'https://cluesbysam.com/', code: '8901' },
-    { month: 'September', gameUrl: 'https://cluesbysam.com/', code: '9012' },
-    { month: 'October', gameUrl: 'https://cluesbysam.com/', code: '0123' },
-    { month: 'November', gameUrl: 'https://cluesbysam.com/', code: '1357' },
-    { month: 'December', gameUrl: 'https://cluesbysam.com/', code: '2468' }
+    { month: 'September', gameUrl: 'https://cluesbysam.com/', code: '9012' }
 ];
 
 // Get the year this project started (for calculating which months should be unlocked)
 // You can change this to the actual start date
 const PROJECT_START_YEAR = 2025;
-const PROJECT_START_MONTH = 1; // January (1-indexed)
+const PROJECT_START_MONTH = 10; // October (1-indexed)
 
 // Get current date
 function getCurrentDate() {
