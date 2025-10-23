@@ -93,11 +93,18 @@ debugReset();
 
 ## Hosting Options
 
-### GitHub Pages (Free)
-1. Push your code to a GitHub repository
-2. Go to Settings > Pages
-3. Select the main branch and root folder
-4. Your site will be available at `https://username.github.io/repository-name/`
+### GitHub Pages (Free) - Automated Deployment
+This project includes a GitHub Actions workflow that automatically deploys to GitHub Pages.
+
+**Setup Steps:**
+1. Push your code to a GitHub repository (if not already done)
+2. Go to your repository Settings > Pages
+3. Under "Build and deployment", select **Source**: "GitHub Actions"
+4. The workflow will automatically deploy when you push to the main branch
+5. Your site will be available at `https://username.github.io/repository-name/`
+
+**Manual trigger:**
+- You can also manually trigger the deployment from the "Actions" tab > "Deploy to GitHub Pages" > "Run workflow"
 
 ### Netlify (Free)
 1. Drag and drop your project folder to Netlify
