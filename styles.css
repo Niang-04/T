@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #F28F42 0%, #FF0000 100%);
     min-height: 100vh;
     padding: 20px;
     color: #333;
@@ -60,9 +60,9 @@ h1 {
 }
 
 .tile.locked {
-    background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF0000 100%);
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 .tile.locked:hover {
@@ -71,11 +71,11 @@ h1 {
 }
 
 .tile.unlocked {
-    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    background: linear-gradient(135deg, #FFFF99 0%, #FFFF00 100%);
 }
 
 .tile.resolved {
-    background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+    background: linear-gradient(135deg, #D4EEF5 0%, #A3DAE3 100%);
 }
 
 .tile-header {
@@ -118,14 +118,14 @@ h1 {
 .code-display {
     font-size: 2rem;
     font-weight: bold;
-    color: #00b894;
+    color: #F28F42;
     margin-top: 15px;
     letter-spacing: 5px;
     font-family: 'Courier New', monospace;
 }
 
 .btn {
-    background-color: #6c5ce7;
+    background-color: #F28F42;
     color: white;
     border: none;
     padding: 12px 24px;
@@ -137,7 +137,7 @@ h1 {
 }
 
 .btn:hover {
-    background-color: #5f3dc4;
+    background-color: #E67E32;
 }
 
 .btn:disabled {
@@ -197,7 +197,7 @@ h1 {
     display: inline-block;
     margin-top: 20px;
     padding: 12px 24px;
-    background-color: #6c5ce7;
+    background-color: #F28F42;
     color: white;
     text-decoration: none;
     border-radius: 25px;
@@ -205,7 +205,7 @@ h1 {
 }
 
 .modal-link:hover {
-    background-color: #5f3dc4;
+    background-color: #E67E32;
 }
 
 .modal-input-group {
@@ -232,7 +232,7 @@ h1 {
 
 .modal-input-group input:focus {
     outline: none;
-    border-color: #6c5ce7;
+    border-color: #F28F42;
 }
 
 /* Responsive design */
