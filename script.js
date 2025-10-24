@@ -1,17 +1,17 @@
 // Configuration: Clues by Sam game URLs for each month
 const gameConfig = [
-    { month: 'October', gameUrl: 'https://cluesbysam.com/archive/da879b8359d5/', code: '0123', character: 'Cheryl', correctRole: 'innocent' },
-    { month: 'November', gameUrl: 'https://cluesbysam.com/archive/ff2ddec591b8/', code: '1357', character: 'Vince', correctRole: 'criminal' },
-    { month: 'December', gameUrl: 'https://cluesbysam.com/archive/0bc6d21e51d6/', code: '2468', character: 'Janet', correctRole: 'innocent' },
-    { month: 'January', gameUrl: 'https://cluesbysam.com/archive/9d47b7b1ca7b/', code: '1234', character: 'Vicky', correctRole: 'criminal' },
-    { month: 'February', gameUrl: 'https://cluesbysam.com/archive/e5a55fb98820/', code: '2345', character: 'Rob', correctRole: 'criminal' },
-    { month: 'March', gameUrl: 'https://cluesbysam.com/archive/325524b265bc/', code: '3456', character: 'Lucy', correctRole: 'criminal' },
-    { month: 'April', gameUrl: 'https://cluesbysam.com/s/archive/17b596917377/', code: '4567', character: 'Ben', correctRole: 'innocent' },
-    { month: 'May', gameUrl: 'https://cluesbysam.com/s/archive/08cab97f0fdb/', code: '5678', character: 'Olivia', correctRole: 'criminal' },
-    { month: 'June', gameUrl: 'https://cluesbysam.com/s/archive/95a745eb930a/', code: '6789', character: 'Laura', correctRole: 'criminal' },
-    { month: 'July', gameUrl: 'https://cluesbysam.com/archive/d7d07ec6811d/', code: '7890', character: 'Brian', correctRole: 'criminal' },
-    { month: 'August', gameUrl: 'https://cluesbysam.com/archive/f14610e1cd4d/', code: '8901', character: 'Zara', correctRole: 'innocent' },
-    { month: 'September', gameUrl: 'https://cluesbysam.com/archive/534926b17285/', code: '9012', character: 'Amy', correctRole: 'criminal' }
+    { month: 'October', gameUrl: 'https://cluesbysam.com/archive/da879b8359d5/', code: '012', character: 'Cheryl', correctRole: 'innocent' },
+    { month: 'November', gameUrl: 'https://cluesbysam.com/archive/ff2ddec591b8/', code: '846', character: 'Vince', correctRole: 'criminal' },
+    { month: 'December', gameUrl: 'https://cluesbysam.com/archive/0bc6d21e51d6/', code: '347', character: 'Janet', correctRole: 'innocent' },
+    { month: 'January', gameUrl: 'https://cluesbysam.com/archive/9d47b7b1ca7b/', code: '681', character: 'Vicky', correctRole: 'criminal' },
+    { month: 'February', gameUrl: 'https://cluesbysam.com/archive/e5a55fb98820/', code: '677', character: 'Rob', correctRole: 'criminal' },
+    { month: 'March', gameUrl: 'https://cluesbysam.com/archive/325524b265bc/', code: '924', character: 'Lucy', correctRole: 'criminal' },
+    { month: 'April', gameUrl: 'https://cluesbysam.com/s/archive/17b596917377/', code: '698', character: 'Ben', correctRole: 'innocent' },
+    { month: 'May', gameUrl: 'https://cluesbysam.com/s/archive/08cab97f0fdb/', code: '346', character: 'Olivia', correctRole: 'criminal' },
+    { month: 'June', gameUrl: 'https://cluesbysam.com/s/archive/95a745eb930a/', code: '876', character: 'Laura', correctRole: 'criminal' },
+    { month: 'July', gameUrl: 'https://cluesbysam.com/archive/d7d07ec6811d/', code: '914', character: 'Brian', correctRole: 'criminal' },
+    { month: 'August', gameUrl: 'https://cluesbysam.com/archive/f14610e1cd4d/', code: '642', character: 'Zara', correctRole: 'innocent' },
+    { month: 'September', gameUrl: 'https://cluesbysam.com/archive/534926b17285/', code: '917', character: 'Amy', correctRole: 'criminal' }
 ];
 
 // Get the year this project started (for calculating which months should be unlocked)
