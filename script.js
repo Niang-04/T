@@ -147,7 +147,7 @@ function openModal(config, index, isResolved) {
         modalBody.innerHTML = `
             <p>🎉 Congratulations! You've already solved this puzzle!</p>
             <div class="code-display">${resolvedTiles[index]}</div>
-            <p style="margin-top: 20px;">Your 4-digit code for ${config.month} is ready to use.</p>
+            <p style="margin-top: 20px;">Your 3-digit code for ${config.month} is ready to use.</p>
         `;
     } else {
         modalBody.innerHTML = `
@@ -190,7 +190,7 @@ function openModal(config, index, isResolved) {
                     <p>🎉 Congratulations! That's correct!</p>
                     <p>${config.character} is ${config.correctRole}!</p>
                     <div class="code-display" style="font-size: 32px; margin: 20px 0;">${config.code}</div>
-                    <p>Your 4-digit code for ${config.month} is: <strong>${config.code}</strong></p>
+                    <p>Your 3-digit code for ${config.month} is: <strong>${config.code}</strong></p>
                     <button class="btn" id="closeModal" style="width: 100%; margin-top: 15px;">Close</button>
                 `;
                 
