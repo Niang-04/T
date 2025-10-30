@@ -57,6 +57,7 @@ const translations = {
 };
 
 // Month names in different languages
+// Index 0 = October, 1 = November, etc. (matches gameConfig order)
 const monthNames = {
     en: ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September'],
     fr: ['Octobre', 'Novembre', 'Décembre', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre']
@@ -328,8 +329,9 @@ function openModal(config, index, isResolved) {
                 // Correct answer! Save the code
                 saveResolvedTile(index, config.code);
                 
-                // Get translated role name
-                const roleName = t(config.correctRole.toLowerCase());
+                // Get translated role name (ensure lowercase for translation key lookup)
+                const roleKey = config.correctRole.toLowerCase();
+                const roleName = t(roleKey);
                 
                 // Show success message with the code
                 modalBody.innerHTML = `
