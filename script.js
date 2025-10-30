@@ -1,3 +1,140 @@
+// Translation object for French and English
+const translations = {
+    en: {
+        title: "Your 12 Monthly Surprises 🎁",
+        subtitle: "Each month unlocks a new puzzle. Solve it to reveal your code!",
+        resetBtn: "Reset progress",
+        unlocks: "Unlocks",
+        dayUntilUnlock: "day until unlock",
+        daysUntilUnlock: "days until unlock",
+        congratulationsResolved: "🎉 Congratulations! You've already solved this puzzle!",
+        codeReady: "Your 3-digit code for {month} is ready to use.",
+        timeToSolve: "🎮 Time to solve your puzzle!",
+        clickLink: "Click the link below to play the Clues by Sam game for {month}.",
+        playGame: "Play Game",
+        whatIsRole: "What is the role of {character}?",
+        selectRole: "Select a role...",
+        innocent: "Innocent",
+        criminal: "Criminal",
+        submitAnswer: "Submit Answer",
+        pleaseSelect: "Please select a role",
+        correctAnswer: "🎉 Congratulations! That's correct!",
+        characterIs: "{character} is {role}!",
+        yourCode: "Your 3-digit code for {month} is: {code}",
+        close: "Close",
+        incorrectRole: "Incorrect role for {character}. Try again!",
+        confirmReset: "Are you sure you want to reset all progress? This cannot be undone.",
+        theme: "Theme",
+        language: "Language"
+    },
+    fr: {
+        title: "Vos 12 Surprises Mensuelles 🎁",
+        subtitle: "Chaque mois débloque un nouveau puzzle. Résolvez-le pour révéler votre code!",
+        resetBtn: "Réinitialiser la progression",
+        unlocks: "Se débloque",
+        dayUntilUnlock: "jour avant le déblocage",
+        daysUntilUnlock: "jours avant le déblocage",
+        congratulationsResolved: "🎉 Félicitations! Vous avez déjà résolu ce puzzle!",
+        codeReady: "Votre code à 3 chiffres pour {month} est prêt à utiliser.",
+        timeToSolve: "🎮 Il est temps de résoudre votre puzzle!",
+        clickLink: "Cliquez sur le lien ci-dessous pour jouer au jeu Clues by Sam pour {month}.",
+        playGame: "Jouer",
+        whatIsRole: "Quel est le rôle de {character}?",
+        selectRole: "Sélectionnez un rôle...",
+        innocent: "Innocent",
+        criminal: "Criminel",
+        submitAnswer: "Soumettre la réponse",
+        pleaseSelect: "Veuillez sélectionner un rôle",
+        correctAnswer: "🎉 Félicitations! C'est correct!",
+        characterIs: "{character} est {role}!",
+        yourCode: "Votre code à 3 chiffres pour {month} est: {code}",
+        close: "Fermer",
+        incorrectRole: "Rôle incorrect pour {character}. Réessayez!",
+        confirmReset: "Êtes-vous sûr de vouloir réinitialiser toute la progression? Cela ne peut pas être annulé.",
+        theme: "Thème",
+        language: "Langue"
+    }
+};
+
+// Month names in different languages
+// Index 0 = October, 1 = November, etc. (matches gameConfig order)
+const monthNames = {
+    en: ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September'],
+    fr: ['Octobre', 'Novembre', 'Décembre', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre']
+};
+
+// Get current language from localStorage or default to English
+function getCurrentLanguage() {
+    return localStorage.getItem('language') || 'en';
+}
+
+// Set language
+function setLanguage(lang) {
+    localStorage.setItem('language', lang);
+    updateUILanguage();
+}
+
+// Get translated text
+function t(key, replacements = {}) {
+    const lang = getCurrentLanguage();
+    let text = translations[lang][key] || translations['en'][key] || key;
+    
+    // Replace placeholders
+    Object.keys(replacements).forEach(placeholder => {
+        text = text.replace(`{${placeholder}}`, replacements[placeholder]);
+    });
+    
+    return text;
+}
+
+// Get month name in current language
+function getMonthName(index) {
+    const lang = getCurrentLanguage();
+    return monthNames[lang][index] || monthNames['en'][index];
+}
+
+// Get current theme from localStorage or default to light
+function getCurrentTheme() {
+    return localStorage.getItem('theme') || 'light';
+}
+
+// Set theme
+function setTheme(theme) {
+    localStorage.setItem('theme', theme);
+    document.body.setAttribute('data-theme', theme);
+}
+
+// Toggle theme
+function toggleTheme() {
+    const currentTheme = getCurrentTheme();
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+}
+
+// Toggle language
+function toggleLanguage() {
+    const currentLang = getCurrentLanguage();
+    const newLang = currentLang === 'en' ? 'fr' : 'en';
+    setLanguage(newLang);
+}
+
+// Update UI language
+function updateUILanguage() {
+    // Update title and subtitle
+    document.querySelector('h1').textContent = t('title');
+    document.querySelector('.subtitle').textContent = t('subtitle');
+    document.getElementById('resetBtn').textContent = t('resetBtn');
+    
+    // Update language button text
+    const langBtn = document.getElementById('langBtn');
+    if (langBtn) {
+        langBtn.textContent = getCurrentLanguage().toUpperCase();
+    }
+    
+    // Re-render tiles to update month names and other text
+    renderTiles();
+}
+
 // Configuration: Clues by Sam game URLs for each month
 const gameConfig = [
     { month: 'October', gameUrl: 'https://cluesbysam.com/archive/da879b8359d5/', code: '012', character: 'Cheryl', correctRole: 'innocent' },
@@ -44,6 +181,13 @@ function getUnlockDate(monthIndex) {
     return new Date(unlockYear, unlockMonth - 1, 1);
 }
 
+// Format date based on current language
+function formatUnlockDate(date) {
+    const lang = getCurrentLanguage();
+    const locale = lang === 'fr' ? 'fr-FR' : 'en-US';
+    return date.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
+}
+
 // Load resolved tiles from localStorage
 function getResolvedTiles() {
     const stored = localStorage.getItem('resolvedTiles');
@@ -81,7 +225,7 @@ function createTile(config, index) {
     
     const monthName = document.createElement('div');
     monthName.className = 'month-name';
-    monthName.textContent = config.month;
+    monthName.textContent = getMonthName(index);
     
     tileHeader.appendChild(monthName);
     
@@ -108,7 +252,7 @@ function createTile(config, index) {
         const unlockDate = getUnlockDate(index);
         const unlockDateText = document.createElement('div');
         unlockDateText.className = 'unlock-date';
-        unlockDateText.textContent = `Unlocks: ${unlockDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+        unlockDateText.textContent = `${t('unlocks')}: ${formatUnlockDate(unlockDate)}`;
         tileContent.appendChild(unlockDateText);
         // Show days until unlock
         const now = getCurrentDate();
@@ -117,7 +261,7 @@ function createTile(config, index) {
             const days = Math.ceil(msUntil / (1000 * 60 * 60 * 24));
             const eta = document.createElement('div');
             eta.className = 'unlock-eta';
-            eta.textContent = `${days} day${days > 1 ? 's' : ''} until unlock`;
+            eta.textContent = `${days} ${days > 1 ? t('daysUntilUnlock') : t('dayUntilUnlock')}`;
             tileContent.appendChild(eta);
         }
     }
@@ -140,28 +284,28 @@ function openModal(config, index, isResolved) {
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     
-    modalTitle.textContent = config.month;
+    modalTitle.textContent = getMonthName(index);
     
     if (isResolved) {
         const resolvedTiles = getResolvedTiles();
         modalBody.innerHTML = `
-            <p>🎉 Congratulations! You've already solved this puzzle!</p>
+            <p>${t('congratulationsResolved')}</p>
             <div class="code-display">${resolvedTiles[index]}</div>
-            <p style="margin-top: 20px;">Your 3-digit code for ${config.month} is ready to use.</p>
+            <p style="margin-top: 20px;">${t('codeReady', { month: getMonthName(index) })}</p>
         `;
     } else {
         modalBody.innerHTML = `
-            <p>🎮 Time to solve your puzzle!</p>
-            <p>Click the link below to play the Clues by Sam game for ${config.month}.</p>
-            <a href="${config.gameUrl}" target="_blank" rel="noopener noreferrer" class="modal-link">Play Game</a>
+            <p>${t('timeToSolve')}</p>
+            <p>${t('clickLink', { month: getMonthName(index) })}</p>
+            <a href="${config.gameUrl}" target="_blank" rel="noopener noreferrer" class="modal-link">${t('playGame')}</a>
             <div class="modal-input-group">
-                <label for="roleInput">What is the role of ${config.character}?</label>
+                <label for="roleInput">${t('whatIsRole', { character: config.character })}</label>
                 <select id="roleInput" style="width: 100%; padding: 10px; font-size: 16px; border-radius: 4px; border: 1px solid #ddd; margin-top: 8px;">
-                    <option value="">Select a role...</option>
-                    <option value="innocent">Innocent</option>
-                    <option value="criminal">Criminal</option>
+                    <option value="">${t('selectRole')}</option>
+                    <option value="innocent">${t('innocent')}</option>
+                    <option value="criminal">${t('criminal')}</option>
                 </select>
-                <button class="btn" id="submitCode" style="width: 100%; margin-top: 15px;">Submit Answer</button>
+                <button class="btn" id="submitCode" style="width: 100%; margin-top: 15px;">${t('submitAnswer')}</button>
                 <div id="errorMessage" style="color: #ff4444; margin-top: 10px; display: none;"></div>
             </div>
         `;
@@ -175,7 +319,7 @@ function openModal(config, index, isResolved) {
             const selectedRole = roleInput.value.toLowerCase();
             
             if (!selectedRole) {
-                errorMessage.textContent = 'Please select a role';
+                errorMessage.textContent = t('pleaseSelect');
                 errorMessage.style.display = 'block';
                 return;
             }
@@ -185,13 +329,17 @@ function openModal(config, index, isResolved) {
                 // Correct answer! Save the code
                 saveResolvedTile(index, config.code);
                 
+                // Get translated role name (ensure lowercase for translation key lookup)
+                const roleKey = config.correctRole.toLowerCase();
+                const roleName = t(roleKey);
+                
                 // Show success message with the code
                 modalBody.innerHTML = `
-                    <p>🎉 Congratulations! That's correct!</p>
-                    <p>${config.character} is ${config.correctRole}!</p>
+                    <p>${t('correctAnswer')}</p>
+                    <p>${t('characterIs', { character: config.character, role: roleName })}</p>
                     <div class="code-display" style="font-size: 32px; margin: 20px 0;">${config.code}</div>
-                    <p>Your 3-digit code for ${config.month} is: <strong>${config.code}</strong></p>
-                    <button class="btn" id="closeModal" style="width: 100%; margin-top: 15px;">Close</button>
+                    <p>${t('yourCode', { month: getMonthName(index), code: config.code })}</p>
+                    <button class="btn" id="closeModal" style="width: 100%; margin-top: 15px;">${t('close')}</button>
                 `;
                 
                 document.getElementById('closeModal').addEventListener('click', () => {
@@ -200,7 +348,7 @@ function openModal(config, index, isResolved) {
                 });
             } else {
                 // Wrong answer
-                errorMessage.textContent = `Incorrect role for ${config.character}. Try again!`;
+                errorMessage.textContent = t('incorrectRole', { character: config.character });
                 errorMessage.style.display = 'block';
             }
         });
@@ -238,13 +386,32 @@ function setupModalClose() {
 
 // Initialize the application
 function init() {
+    // Apply saved theme
+    setTheme(getCurrentTheme());
+    
+    // Update language
+    updateUILanguage();
+    
     renderTiles();
     setupModalClose();
+    
+    // Wire theme toggle button
+    const themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', toggleTheme);
+    }
+    
+    // Wire language toggle button
+    const langBtn = document.getElementById('langBtn');
+    if (langBtn) {
+        langBtn.addEventListener('click', toggleLanguage);
+    }
+    
     // Wire reset button (with confirmation)
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-            const ok = confirm('Are you sure you want to reset all progress? This cannot be undone.');
+            const ok = confirm(t('confirmReset'));
             if (ok) {
                 if (typeof window.debugReset === 'function') {
                     window.debugReset();
